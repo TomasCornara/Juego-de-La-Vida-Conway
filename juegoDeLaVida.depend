@@ -1,0 +1,15 @@
+# depslib dependency file v1.0
+1725658331 source:c:\users\tomas\desktop\juegodelavida\juegodelavida\funciones.c
+	<stdio.h>
+	<stdlib.h>
+	"juego.h"
+
+1725658331 c:\users\tomas\desktop\juegodelavida\juegodelavida\juego.h
+
+1725657645 source:c:\users\tomas\desktop\juegodelavida\juegodelavida\main.c
+	<stdio.h>
+	<stdlib.h>
+	<windows.h>
+	<string.h>
+	"juego.h"
+
