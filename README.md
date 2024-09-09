@@ -23,9 +23,9 @@ Este proyecto escrito en C consiste de una vector bidimensional de estructuras "
 
 Para compilar y ejecutar el proyecto:
 
-1- Clonar este repositorio.
-2- Cargar una matriz de estado inicial
-3- Compilar usando GCC
+1. Clonar este repositorio.
+2. Cargar una matriz de estado inicial
+3. Compilar usando GCC
 
     gcc -o main.c
     
