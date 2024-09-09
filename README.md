@@ -27,7 +27,9 @@ Para compilar y ejecutar el proyecto:
 2. Cargar una matriz de estado inicial
 3. Compilar usando GCC
 
-    gcc -o main.c
+```
+gcc -o main.c
+```
     
 ## Preview
 
