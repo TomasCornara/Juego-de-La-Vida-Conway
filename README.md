@@ -1,6 +1,6 @@
-# El Juego de la Vida - Implementación en C
+# El Juego de la Vida - TP UNLaM Topicos de Programacion.
 
-Este repositorio es una implementacion en C del **Juego de la Vida** creado por el matematico britanico **John Horton Conway** en 1970. 
+Este repositorio es una implementacion en C del **Juego de la Vida** creado por el matematico britanico **John Horton Conway** en 1970.
 
 El **Juego de la Vida de Conway** es una simulación que se lleva a cabo en una cuadrícula de celdas que pueden estar en dos estados: vivas o muertas. La evolución de las células está determinada por las siguientes reglas:
 
