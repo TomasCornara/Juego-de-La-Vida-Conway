@@ -15,7 +15,7 @@ char calCantVecinos(celula matriz[MAX_FIL][MAX_COL],unsigned int fil, unsigned i
 char calCantVecinosInt(int matriz[MAX_FIL][MAX_COL], unsigned int fil, unsigned int col, unsigned int posX, unsigned int posY);
 void actualizarEstadosFuturos(celula matriz[MAX_FIL][MAX_COL],unsigned int fil, unsigned int col);
 int calEstadoFuturo(celula matriz[MAX_FIL][MAX_COL],unsigned int x, unsigned int y);
-void actualizarEstadosCelulas(celula matriz[MAX_FIL][MAX_COL],unsigned int fil, unsigned int col);
-void actualizarVecinos(celula matriz[MAX_FIL][MAX_COL], unsigned int fil, unsigned int col);
+void actualizarTablero(celula matriz[MAX_FIL][MAX_COL],unsigned int fil, unsigned int col);
+void prtEstado(char caracter);
 
 #endif // JUEGO_H_INCLUDED

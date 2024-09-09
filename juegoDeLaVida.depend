@@ -13,3 +13,17 @@
 	<string.h>
 	"juego.h"
 
+1725895342 source:c:\users\tomas\desktop\juegodelavida\juegodelavida\juegodelavida\funciones.c
+	<stdio.h>
+	<stdlib.h>
+	"juego.h"
+
+1725895342 c:\users\tomas\desktop\juegodelavida\juegodelavida\juegodelavida\juego.h
+
+1725892922 source:c:\users\tomas\desktop\juegodelavida\juegodelavida\juegodelavida\main.c
+	<stdio.h>
+	<stdlib.h>
+	<windows.h>
+	<string.h>
+	"juego.h"
+

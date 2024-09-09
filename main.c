@@ -28,7 +28,7 @@ int main()
 };
 
 
-    //Ocilador 6 x 6
+    //Ocilador 6 x 6. NOTA: Recordar cambiar el tam de las columnas y filas en las funciones.
     /*int tableroCarga[MAX_FIL][MAX_COL] =
     {
         {0,0,0,0,0,0},
@@ -45,28 +45,19 @@ int main()
     // Carga del tablero
     cargarTablero(tableroCarga, tablero, 14, 36);
 
-    //printf("\nDEBUG: Cant vecinos %d", calCantVecinos(tablero, 6, 6, 5, 5));
-    //printf("\nDEBUG: Cant vecinos %d", tablero[1][3].cantVecinosVivos);
-
-    // Loop principal
-    system("cls");
     while (1)
     {
-        //Imprime tablero
-        printTablero(tablero, 14, 36);
+        //Limpio el frame anterior
+        system("cls");
 
         //Actualiza estados futuros
         actualizarEstadosFuturos(tablero, 14, 36);
 
         //Actualizo celulas
-        actualizarEstadosCelulas(tablero, 14, 36);
+        actualizarTablero(tablero, 14, 36);
 
-        //Actualizo sus vecinos
-        actualizarVecinos(tablero, 14, 36);
-
-
-        Sleep(50); // Espera 50ms antes de volver a actualizar
-        system("cls"); // Limpia la pantalla
+        // Espero 50ms antes del siguiente frame
+        Sleep(50);
     }
 
     return 0;
