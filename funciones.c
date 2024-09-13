@@ -16,7 +16,7 @@ void actualizarTablero(celula matriz[MAX_FIL][MAX_COL], unsigned int fil, unsign
         {
             matriz[x][y].estadoActual = matriz[x][y].estadoFuturo;
             matriz[x][y].cantVecinosVivos = calCantVecinos(matriz,fil,col,x,y);
-            prtEstado(matriz[x][y].estadoActual);
+            //prtEstado(matriz[x][y].estadoActual);
         }
 
         printf("\n"); //Fin de la fila
@@ -24,8 +24,9 @@ void actualizarTablero(celula matriz[MAX_FIL][MAX_COL], unsigned int fil, unsign
 }
 
 //Funcion para imprimir el estado de una celula
-void prtEstado(char caracter){
-    printf("%c", (caracter == 1) ? '#' : ' ');
+void prtEstado(bool estado)
+{
+    printf("%c", (estado == true) ? 'm' : ' ');
 }
 
 //Esta funcion recorre el tablero calculando los estados futuros de las celulas segun la cantidad de vecinos
@@ -41,22 +42,22 @@ void actualizarEstadosFuturos(celula matriz[MAX_FIL][MAX_COL], unsigned int fil,
 }
 
 //Calcula cual va a ser el estado futuro de una celula
-int calEstadoFuturo(celula matriz[MAX_FIL][MAX_COL],unsigned int x, unsigned int y)
+bool calEstadoFuturo(celula matriz[MAX_FIL][MAX_COL],unsigned int x, unsigned int y)
 {
-    if (matriz[x][y].estadoActual == 1)
+    if (matriz[x][y].estadoActual == true)
     {
         // Si la célula está viva
-        return (matriz[x][y].cantVecinosVivos == 2 || matriz[x][y].cantVecinosVivos == 3) ? 1 : 0;
+        return (matriz[x][y].cantVecinosVivos == 2 || matriz[x][y].cantVecinosVivos == 3) ? true : false;
     }
     else
     {
         // Si la célula está muerta
-        return (matriz[x][y].cantVecinosVivos == 3) ? 1 : 0;
+        return (matriz[x][y].cantVecinosVivos == 3) ? true : false;
     }
 }
 
 //Celcula la cantidad de vecinos vivos de una celula
-char calCantVecinos(celula matriz[MAX_FIL][MAX_COL], unsigned int fil, unsigned int col, unsigned int posX, unsigned int posY)
+unsigned char calCantVecinos(celula matriz[MAX_FIL][MAX_COL], unsigned int fil, unsigned int col, unsigned int posX, unsigned int posY)
 {
     char cantVecinos = 0;
 
@@ -82,7 +83,7 @@ char calCantVecinos(celula matriz[MAX_FIL][MAX_COL], unsigned int fil, unsigned 
     return cantVecinos;
 }
 
-char calCantVecinosInt(int matriz[MAX_FIL][MAX_COL], unsigned int fil, unsigned int col, unsigned int posX, unsigned int posY)
+unsigned char calCantVecinosInt(int matriz[MAX_FIL][MAX_COL], unsigned int fil, unsigned int col, unsigned int posX, unsigned int posY)
 {
     char cantVecinos = 0;
 
