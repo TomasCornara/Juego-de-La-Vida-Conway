@@ -2,8 +2,6 @@
 #include <stdlib.h>
 #include <unistd.h>
 #ifdef __MINGW32__
-//    #define SDL_MAIN_HANDLED
-//    #include <SDL_main.h>
 #endif
 #include <SDL.h>
 #include "juego.h"
@@ -33,7 +31,10 @@ int main(int argc, char *argv[])
     celula tablero[MAX_FIL][MAX_COL];
     cargarTablero(tableroCarga, tablero, 14, 36);
     unsigned char done;
-    int k;
+    unsigned int k = 0;
+    unsigned int cantGen = 0;
+    unsigned int temp;
+    char titulo[50];
 
     ///BLOQUE PARAMETROS
     int delay               = 100;
@@ -127,7 +128,28 @@ int main(int argc, char *argv[])
         SDL_Delay(delay);
 
         // Actualizar título de la ventana
-        SDL_SetWindowTitle(window, "Juego De La Vida");
+        snprintf(titulo, sizeof(titulo), "Juego De La Vida. Generacion: %d", k);
+        SDL_SetWindowTitle(window, titulo);
+
+                // Si ya se alcanzó el número de generaciones, preguntar cuántas más generar
+        if (cantGen == k)
+        {
+            printf("Cuantas generaciones quiere generar? ");
+            scanf("%d", &temp);
+            cantGen += temp;
+        }
+
+        // Procesar eventos SDL
+        while (SDL_PollEvent(&e) != 0)
+        {
+            if (e.type == SDL_QUIT)
+            {
+                done = 1;
+            }
+        }
+
+
+        k++;
     }
 
 

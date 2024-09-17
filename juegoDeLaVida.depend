@@ -13,7 +13,7 @@
 	<string.h>
 	"juego.h"
 
-1726233690 source:c:\users\tomas\desktop\juegodelavida\juegodelavida\juegodelavida\funciones.c
+1726501008 source:c:\users\tomas\desktop\juegodelavida\juegodelavida\juegodelavida\funciones.c
 	<stdio.h>
 	<stdlib.h>
 	"juego.h"
@@ -21,7 +21,7 @@
 1726233690 c:\users\tomas\desktop\juegodelavida\juegodelavida\juegodelavida\juego.h
 	<stdbool.h>
 
-1726238715 source:c:\users\tomas\desktop\juegodelavida\juegodelavida\juegodelavida\main.c
+1726587203 source:c:\users\tomas\desktop\juegodelavida\juegodelavida\juegodelavida\main.c
 	<stdio.h>
 	<stdlib.h>
 	<unistd.h>

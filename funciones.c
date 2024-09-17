@@ -19,7 +19,7 @@ void actualizarTablero(celula matriz[MAX_FIL][MAX_COL], unsigned int fil, unsign
             //prtEstado(matriz[x][y].estadoActual);
         }
 
-        printf("\n"); //Fin de la fila
+        //printf("\n"); //Fin de la fila
     }
 }
 
