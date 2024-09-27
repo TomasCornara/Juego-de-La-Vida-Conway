@@ -5,45 +5,55 @@
 #endif
 #include <SDL.h>
 #include "juego.h"
-#define CELL_HEIGHT 10
-#define CELL_WIDTH 10
+#define CELL_HEIGHT 5
+#define CELL_WIDTH 5
+#define TAM_TABLERO_W 256
+#define TAM_TABLERO_H 144
+#define CENTER_W TAM_TABLERO_W/2
+#define CENTER_H TAM_TABLERO_H/2
 
 int main(int argc, char *argv[])
 {
-    ///BLOQUE DECLARACION
-    int tableroCarga[MAX_FIL][MAX_COL] =
-    {
-        {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0}, // Fila 1
-        {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0}, // Fila 2
-        {0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1}, // Fila 3
-        {0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1}, // Fila 4
-        {1,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0}, // Fila 5
-        {1,1,0,0,0,0,0,0,0,0,1,0,0,0,1,0,1,1,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0}, // Fila 6
-        {0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0}, // Fila 7
-        {0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}, // Fila 8
-        {0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}, // Fila 9
-        {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}, // Fila 10
-        {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}, // Fila 11
-        {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}, // Fila 12
-        {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}, // Fila 13
-        {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}  // Fila 14
-    };
-    celula tablero[MAX_FIL][MAX_COL];
-    cargarTablero(tableroCarga, tablero, 14, 36);
-    unsigned char done;
-    unsigned int k = 0;
-    unsigned int cantGen = 0;
-    unsigned int temp;
-    char titulo[50];
-
-    ///BLOQUE PARAMETROS
+    ///BLOQUE PARAMETROS PARA SDL
     int delay               = 100;
     SDL_Window* window      = NULL;
     SDL_Renderer* renderer  = NULL;
     SDL_Event e;
     SDL_Rect fillRect;
 
-    ///BLOQUE PROGRAMA
+    ///BLOQUE DECLARACION
+    unsigned char done = 0;
+    unsigned int k = 0;
+    unsigned int cantGen = 0;
+    unsigned int random;
+    int temp;
+    char titulo[50];
+
+    ///CREACION DEL TABLERO
+    celula** tablero = crearTablero(TAM_TABLERO_H, TAM_TABLERO_W);
+    if (!tablero)
+    {
+        printf("Error al crear el tablero.\n");
+        return -1;
+    }
+
+    ///GENERACION DE UN TABLERO RANDOM
+    //Calculo de estados random
+    for(int aux = 0; aux < TAM_TABLERO_H; aux++)
+    {
+        for(int aux2 = 0; aux2 < TAM_TABLERO_W; aux2++)
+        {
+            random = rand()%2;
+            tablero[aux][aux2].estadoFuturo = (random)? true : false; //Es importante que se cargue en el estado futuro por como funciona el programa
+            tablero[aux][aux2].estadoActual = tablero[aux][aux2].estadoFuturo; //Aca cargo en el actual solo para que el primer frame no este vacio
+        }
+    }
+
+    //Cargar tablero (Calculo de vecinos)
+    cargarTablero(tablero, TAM_TABLERO_H, TAM_TABLERO_W);
+
+
+    ///BLOQUE PROGRAMA (SDL)
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
     {
         printf("SDL No se ha podido inicializar! SDL_Error: %s\n", SDL_GetError());
@@ -54,8 +64,8 @@ int main(int argc, char *argv[])
     window = SDL_CreateWindow("Juego de la vida",
                               SDL_WINDOWPOS_UNDEFINED,
                               SDL_WINDOWPOS_UNDEFINED,
-                              640,
-                              480,
+                              1280,
+                              720,
                               SDL_WINDOW_SHOWN);
     if (!window)
     {
@@ -74,7 +84,8 @@ int main(int argc, char *argv[])
         return -1;
     }
 
-    while (!done)
+    ///RENDERIZADO
+    do
     {
         // Procesar eventos SDL
         while (SDL_PollEvent(&e) != 0)
@@ -93,10 +104,10 @@ int main(int argc, char *argv[])
         fillRect.h = CELL_HEIGHT;  // Alto de cada célula
         fillRect.w = CELL_WIDTH;   // Ancho de cada célula
 
-        // Dibujar cada célula en la matriz
-        for (int i = 0; i < MAX_FIL; ++i)
+        ///DIBUJAR LA MATRIZ
+        for (int i = 0; i < TAM_TABLERO_H; ++i)
         {
-            for (int j = 0; j < MAX_COL; ++j)
+            for (int j = 0; j < TAM_TABLERO_W; ++j)
             {
                 // Ajustar la posición del rectángulo
                 fillRect.x = j * CELL_WIDTH;
@@ -121,8 +132,8 @@ int main(int argc, char *argv[])
         SDL_RenderPresent(renderer);
 
         // Procesar la lógica del juego (actualizar estados y tablero)
-        actualizarEstadosFuturos(tablero, 14, 36); // Función que calcula el estado futuro
-        actualizarTablero(tablero, 14, 36);        // Función que aplica los estados futuros
+        actualizarEstadosFuturos(tablero, TAM_TABLERO_H, TAM_TABLERO_W); // Función que calcula el estado futuro
+        actualizarTablero(tablero, TAM_TABLERO_H, TAM_TABLERO_W);        // Función que aplica los estados futuros
 
         // Retraso para controlar la velocidad de actualización
         SDL_Delay(delay);
@@ -131,33 +142,40 @@ int main(int argc, char *argv[])
         snprintf(titulo, sizeof(titulo), "Juego De La Vida. Generacion: %d", k);
         SDL_SetWindowTitle(window, titulo);
 
-                // Si ya se alcanzó el número de generaciones, preguntar cuántas más generar
+        // Si ya se alcanzó el número de generaciones, preguntar cuántas más generar
         if (cantGen == k)
         {
-            printf("Cuantas generaciones quiere generar? ");
-            scanf("%d", &temp);
-            cantGen += temp;
-        }
-
-        // Procesar eventos SDL
-        while (SDL_PollEvent(&e) != 0)
-        {
-            if (e.type == SDL_QUIT)
+            system("cls");
+            do
             {
-                done = 1;
+                printf("Cuantas generaciones quiere generar? ");
+                scanf("%d", &temp);
+
+                if (temp <= 0)
+                {
+                    printf("Error: el numero tiene que ser mayor que 0.\n");
+                }
             }
+            while (temp <= 0);
+
+            cantGen += temp;
         }
 
 
         k++;
+
     }
+    while(!done);
 
-
+    ///Liberaciones de SDL
     //destruyo todos los elementos creados
     //Observar ni mas ni menos que destructores, en la asignatura no inventamos nada!
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
+
+    ///Liberacion del tablero
+    destruirTablero(tablero,TAM_TABLERO_W);
 
     return 0;
 }
