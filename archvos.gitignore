@@ -1,0 +1,3 @@
+# Ignorar todas las carpetas obj y bin en cualquier lugar del proyecto
+**/obj/
+**/bin/
