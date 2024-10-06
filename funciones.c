@@ -2,23 +2,64 @@
 #include <stdlib.h>
 #include "juego.h"
 
-// Crear tablero con memoria dinámica
-celula** crearTablero(unsigned int fil, unsigned int col) {
-    // Reserva para las filas (punteros a cada fila)
-    celula** vectorFilas = malloc(sizeof(celula*) * fil);
-    if (!vectorFilas) {
+//Leer tablero
+bool cargaTablero(celula** tablero, char* archivoName, int centroX, int centroY, unsigned int fil, unsigned int col)
+{
+    int coordenadaX, coordenadaY;
+
+    // Abro el archivo
+    FILE* archivo = fopen(archivoName, "rt");
+    if (!archivo)  // Chequeo si se pudo abrir el archivo
+    {
+        return false; //Devuelvo false porque hubo un error
+    }
+
+    // Si se encuentra el archivo, leo las coordenadas y actualizo el tablero
+    while (fscanf(archivo, "%d,%d", &coordenadaX, &coordenadaY) != EOF)
+    {
+
+        tablero[coordenadaX + centroX][coordenadaY + centroY ].estadoActual = true;  // Cargo el estado
+    }
+
+    // Cierro el archivo
+    fclose(archivo);
+
+    // Les calculo sus vecinos
+    for (unsigned int x = 0; x < fil; x++)
+    {
+        for (unsigned int y = 0; y < col; y++)
+        {
+            tablero[x][y].cantVecinosVivos = calCantVecinos(tablero, fil, col, x, y);
+            tablero[x][y].estadoFuturo = calEstadoFuturo(tablero, x, y);
+        }
+    }
+
+    return true;  // Salió true porque salio todo bien
+}
+
+
+// Crear tablero con memoria dinámica usando calloc
+celula** crearTablero(unsigned int fil, unsigned int col)
+{
+    // Reserva para las filas (punteros a cada fila) usando calloc
+    celula** vectorFilas = calloc(fil, sizeof(celula*));
+    if (!vectorFilas)
+    {
         return NULL;
     }
 
     celula** punteroFila = vectorFilas;  // Puntero auxiliar para recorrer las filas
 
     // Reserva memoria para cada fila
-    for (unsigned int x = 0; x < fil; x++, punteroFila++) {
-        *punteroFila = calloc(col,sizeof(celula));
+    for (unsigned int x = 0; x < fil; x++, punteroFila++)
+    {
+        *punteroFila = calloc(col, sizeof(celula));
 
-        // Si hay algún error, libero la memoria previamente asignada
-        if (!*punteroFila) {
-            while (punteroFila != vectorFilas) {
+        // Si hay algun error, libero la memoria previamente asignada
+        if (!*punteroFila)
+        {
+            while (punteroFila != vectorFilas)
+            {
                 punteroFila--;
                 free(*punteroFila);
             }
@@ -30,18 +71,19 @@ celula** crearTablero(unsigned int fil, unsigned int col) {
     return vectorFilas;
 }
 
+
 //Destruye un tablero dinamico
-void destruirTablero(celula** tablero, unsigned int fil) {
-    if (tablero == NULL) {
+void destruirTablero(celula** tablero, unsigned int fil)
+{
+    if (tablero == NULL)
+    {
         return;
     }
 
-    // Puntero auxiliar para recorrer las filas
-    celula** punteroFila = tablero;
-
-    // Liberar cada fila usando aritmética de punteros
-    for (unsigned int i = 0; i < fil; i++, punteroFila++) {
-        free(*punteroFila);  // Liberar la fila actual
+    // Liberar cada fila
+    for (unsigned int i = 0; i < fil; i++)
+    {
+        free(tablero[i]);  // Liberar la fila actual
     }
 
     // Liberar el array de punteros a filas
@@ -51,29 +93,21 @@ void destruirTablero(celula** tablero, unsigned int fil) {
 // Actualiza los estados de las células
 void actualizarTablero(celula** matriz, unsigned int fil, unsigned int col)
 {
+    // Actualiza el estado actual basado en el futuro
     for (unsigned int x = 0; x < fil; x++)
     {
         for (unsigned int y = 0; y < col; y++)
         {
             matriz[x][y].estadoActual = matriz[x][y].estadoFuturo;
-            matriz[x][y].cantVecinosVivos = calCantVecinos(matriz, fil, col, x, y);
         }
     }
-}
 
-// Función para imprimir el estado de una célula
-void prtEstado(bool estado)
-{
-    printf("%c", (estado == true) ? 'm' : ' ');
-}
-
-// Esta función recorre el tablero calculando los estados futuros de las células según la cantidad de vecinos
-void actualizarEstadosFuturos(celula** matriz, unsigned int fil, unsigned int col)
-{
+    //Actualiza la cantidad de vecinos vivos para cada célula y luego su estado futuro
     for (unsigned int x = 0; x < fil; x++)
     {
         for (unsigned int y = 0; y < col; y++)
         {
+            matriz[x][y].cantVecinosVivos = calCantVecinos(matriz, fil, col, x, y);
             matriz[x][y].estadoFuturo = calEstadoFuturo(matriz, x, y);
         }
     }
@@ -97,37 +131,25 @@ unsigned char calCantVecinos(celula** matriz, unsigned int fil, unsigned int col
 {
     unsigned char cantVecinos = 0;
 
+    // Definir los límites de la submatriz
     unsigned int limiteLateralIzq = (posY > 0) ? posY - 1 : 0;
     unsigned int limiteSuperior = (posX > 0) ? posX - 1 : 0;
     unsigned int limiteLateralDer = (posY < (col - 1)) ? posY + 1 : col - 1;
     unsigned int limiteInferior = (posX < (fil - 1)) ? posX + 1 : fil - 1;
 
+    // Recorrer la submatriz
     for (unsigned int x = limiteSuperior; x <= limiteInferior; x++)
     {
         for (unsigned int y = limiteLateralIzq; y <= limiteLateralDer; y++)
         {
+            // No contar la posición central
             if (!(x == posX && y == posY))
             {
-                if (matriz[x][y].estadoFuturo != 0)
-                {
-                    cantVecinos++;
-                }
+                // Sumar el estado actual (1 si está viva, 0 si no)
+                cantVecinos += matriz[x][y].estadoActual;
             }
         }
     }
 
     return cantVecinos;
-}
-
-// Convierte una matriz plantilla de 1s y 0s en un tablero
-void cargarTablero(celula** matriz, unsigned int fil, unsigned int col)
-{
-    for (unsigned int x = 0; x < fil; x++)
-    {
-        for (unsigned int y = 0; y < col; y++)
-        {
-            matriz[x][y].cantVecinosVivos = calCantVecinos(matriz, fil, col, x, y);
-            matriz[x][y].estadoFuturo = calEstadoFuturo(matriz, x, y);
-        }
-    }
 }

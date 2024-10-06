@@ -5,12 +5,14 @@
 #endif
 #include <SDL.h>
 #include "juego.h"
-#define CELL_HEIGHT 5
-#define CELL_WIDTH 5
-#define TAM_TABLERO_W 256
-#define TAM_TABLERO_H 144
-#define CENTER_W TAM_TABLERO_W/2
-#define CENTER_H TAM_TABLERO_H/2
+#define CELL_HEIGHT 3
+#define CELL_WIDTH 3
+#define RES_H 720
+#define RES_W 1280
+#define TAM_TABLERO_W 600
+#define TAM_TABLERO_H 300
+#define CENTER_W RES_W/CELL_HEIGHT/2
+#define CENTER_H RES_H/CELL_WIDTH/2
 
 int main(int argc, char *argv[])
 {
@@ -25,7 +27,6 @@ int main(int argc, char *argv[])
     unsigned char done = 0;
     unsigned int k = 0;
     unsigned int cantGen = 0;
-    unsigned int random;
     int temp;
     char titulo[50];
 
@@ -37,20 +38,13 @@ int main(int argc, char *argv[])
         return -1;
     }
 
-    ///GENERACION DE UN TABLERO RANDOM
-    //Calculo de estados random
-    for(int aux = 0; aux < TAM_TABLERO_H; aux++)
+    ///CARGA DE UN TABLERO DESDE UN ARCHIVO
+    if (!cargaTablero(tablero, "puffer.txt", CENTER_H, CENTER_W,TAM_TABLERO_H,TAM_TABLERO_W))
     {
-        for(int aux2 = 0; aux2 < TAM_TABLERO_W; aux2++)
-        {
-            random = rand()%2;
-            tablero[aux][aux2].estadoFuturo = (random)? true : false; //Es importante que se cargue en el estado futuro por como funciona el programa
-            tablero[aux][aux2].estadoActual = tablero[aux][aux2].estadoFuturo; //Aca cargo en el actual solo para que el primer frame no este vacio
-        }
+        printf("Error al cargar el tablero desde el archivo.\n");
+        destruirTablero(tablero, TAM_TABLERO_H);
+        return -1;
     }
-
-    //Cargar tablero (Calculo de vecinos)
-    cargarTablero(tablero, TAM_TABLERO_H, TAM_TABLERO_W);
 
 
     ///BLOQUE PROGRAMA (SDL)
@@ -64,8 +58,8 @@ int main(int argc, char *argv[])
     window = SDL_CreateWindow("Juego de la vida",
                               SDL_WINDOWPOS_UNDEFINED,
                               SDL_WINDOWPOS_UNDEFINED,
-                              1280,
-                              720,
+                              RES_W,
+                              RES_H,
                               SDL_WINDOW_SHOWN);
     if (!window)
     {
@@ -90,9 +84,19 @@ int main(int argc, char *argv[])
         // Procesar eventos SDL
         while (SDL_PollEvent(&e) != 0)
         {
+            //Comprueba si el usuario cierra la ventana
             if (e.type == SDL_QUIT)
             {
                 done = 1;
+            }
+
+            else if (e.type == SDL_KEYDOWN)
+            {
+                // Comprobar si la tecla es la tecla Escape
+                if (e.key.keysym.sym == SDLK_ESCAPE)
+                {
+                    done = 1;  // Terminar el programa cuando se presiona Escape
+                }
             }
         }
 
@@ -116,7 +120,7 @@ int main(int argc, char *argv[])
                 // Elegir el color según el estado de la célula
                 if (tablero[i][j].estadoActual == true)
                 {
-                    SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF); // Verde para célula viva
+                    SDL_SetRenderDrawColor(renderer, 0xB3, 0xB3, 0xB3, 0xB3); // Gris para célula viva
                 }
                 else
                 {
@@ -128,12 +132,24 @@ int main(int argc, char *argv[])
             }
         }
 
+        /*for(int x = 0 + CENTER_H - 2; x < CENTER_H + 15; x++)
+        {
+            for(int i = 0 + CENTER_W - 2; i < CENTER_W + 40; i++)
+            {
+                if(tablero[x][i].estadoActual == true){
+                    printf("# ");
+                } else {
+                    printf("%d ",tablero[x][i].cantVecinosVivos);
+                }
+            }
+            printf("\n");
+        }*/
+
         // Actualizar el lienzo
         SDL_RenderPresent(renderer);
 
         // Procesar la lógica del juego (actualizar estados y tablero)
-        actualizarEstadosFuturos(tablero, TAM_TABLERO_H, TAM_TABLERO_W); // Función que calcula el estado futuro
-        actualizarTablero(tablero, TAM_TABLERO_H, TAM_TABLERO_W);        // Función que aplica los estados futuros
+        actualizarTablero(tablero, TAM_TABLERO_H, TAM_TABLERO_W);
 
         // Retraso para controlar la velocidad de actualización
         SDL_Delay(delay);
@@ -145,7 +161,7 @@ int main(int argc, char *argv[])
         // Si ya se alcanzó el número de generaciones, preguntar cuántas más generar
         if (cantGen == k)
         {
-            system("cls");
+            //system("cls");
             do
             {
                 printf("Cuantas generaciones quiere generar? ");
@@ -175,7 +191,7 @@ int main(int argc, char *argv[])
     SDL_Quit();
 
     ///Liberacion del tablero
-    destruirTablero(tablero,TAM_TABLERO_W);
+    destruirTablero(tablero,TAM_TABLERO_H);
 
     return 0;
 }
