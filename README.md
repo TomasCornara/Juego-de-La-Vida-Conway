@@ -33,4 +33,4 @@ gcc -o main.c
     
 ## Preview
 
-![home](https://cdn.discordapp.com/attachments/673346179152609280/1282736156923920488/23.png?ex=66e070a3&is=66df1f23&hm=7ce1f14067baf4783ac84d3523a8278e48c78422cb750c20d1e4f5ab89c17fb9&)
+![home](https://i.postimg.cc/7L6tBTns/ezgif-1-230a36c304.gif)
