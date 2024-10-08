@@ -50,4 +50,8 @@ El nombre del archivo debe ser enviado al programa mediante linea de comandos y 
 
 ## Preview
 
-![home](https://i.postimg.cc/7L6tBTns/ezgif-1-230a36c304.gif)
+![canon](https://i.postimg.cc/7L6tBTns/ezgif-1-230a36c304.gif)
+
+![puffer](https://i.postimg.cc/PfYzLqXR/puffer.gif)
+
+![filler](https://i.postimg.cc/V6jgcs5p/filler.gif)
