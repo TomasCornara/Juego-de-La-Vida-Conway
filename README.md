@@ -8,16 +8,21 @@ El **Juego de la Vida de Conway** es una simulación que se lleva a cabo en una 
 2. Una célula viva con dos o tres vecinos vivos sobrevive.
 3. Una célula viva con más de tres vecinos vivos muere (sobrepoblación).
 4. Una célula muerta con exactamente tres vecinos vivos revive (reproducción).
-
+5. 
 ## Tabla de Contenidos
 
 - [Descripción del Proyecto](#descripción-del-proyecto)
 - [Instrucciones de Uso](#instrucciones-de-uso)
 - [Preview](#preview)
 
+
+
 ## Descripción del Proyecto
 
-Este proyecto escrito en C consiste de una vector bidimensional de estructuras "celula" donde cada una guarda su estado actual, su estado futuro y la cantidad de vecinos que tiene. El programa recorre la matriz una primera calculando su estado futuro de cada celula y luego una segunda para actualizar sus estados pasados e imprimir el estado actual. 
+Este proyecto esta escrito en C y utiliza un vector bidimensional de estructuras 'Celula', donde cada una almacena su estado actual, estado futuro y el número de vecinos vivos. El programa carga un tablero de juego inicial desde un archivo de texto y calcula uno nuevo recorriendo la matriz e intercambiando el estado actual por el futuro. A partir de este nuevo tablero, calcula los vecinos y actualiza los estados futuros.
+La parte visual se muestra mediante SDL2.
+
+
 
 ## Instrucciones de Uso
 
@@ -30,7 +35,19 @@ Para compilar y ejecutar el proyecto:
 ```
 gcc -o main.c
 ```
-    
+El archivo de texto del mapa inicial debe estar en una sub carpeta llamada "maps" que se encuentre en el mismo directorio que el .exe y debe estar formateado de la siguiente forma:
+
+| Fila,Columna |
+| -------------|
+|X,Y|
+|X1,Ya|
+|X2,Yb|
+|Xn,Yn'|
+
+El nombre del archivo debe ser enviado al programa mediante linea de comandos y debe incluir el formato. Por ejemeplo: "canon.txt"
+
+
+
 ## Preview
 
 ![home](https://i.postimg.cc/7L6tBTns/ezgif-1-230a36c304.gif)
