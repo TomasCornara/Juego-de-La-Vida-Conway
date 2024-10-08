@@ -22,9 +22,10 @@
 1728332155 c:\users\tomas\desktop\juegodelavida\juegodelavida\juegodelavida\juego.h
 	<stdbool.h>
 
-1728333153 source:c:\users\tomas\desktop\juegodelavida\juegodelavida\juegodelavida\main.c
+1728417292 source:c:\users\tomas\desktop\juegodelavida\juegodelavida\juegodelavida\main.c
 	<stdio.h>
 	<stdlib.h>
+	<string.h>
 	<unistd.h>
 	<SDL.h>
 	"juego.h"

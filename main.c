@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 #ifdef __MINGW32__
 #endif
@@ -16,12 +17,6 @@
 
 int main(int argc, char *argv[])
 {
-    //Verifico que se haya ingresado algun tablero por parametros
-    if (argc < 2) {
-        printf("Error. No se ingresó un tablero.\n");
-        return -1;
-    }
-
     ///BLOQUE PARAMETROS PARA SDL
     int delay               = 50;
     SDL_Window* window      = NULL;
@@ -35,6 +30,26 @@ int main(int argc, char *argv[])
     unsigned int cantGen = 0;
     int temp;
     char titulo[50];
+    char tableroNombre[100];
+
+    ///Verifico que se haya ingresado algun tablero por parametros
+    if (argc < 2) {
+        printf("Error. No se ingresó un tablero.\n");
+        return -1;
+    }
+
+    //Verifico el largo del nombre
+    if(strlen(argv[1]) > 95){
+        printf("Error. Nombre de archivo es demasiado largo. Pruebe cambiando el nombre de este por uno mas corto.\n");
+        return -1;
+    }
+
+    strcpy(tableroNombre,argv[1]); //Paso el nombre del archivo al buffer "tablero"
+
+    ///Si el user se olvido de agregar el formato, se lo agrego yo
+    if(strstr(tableroNombre,".txt") == NULL){
+        strcat(tableroNombre,".txt");
+    }
 
     ///CREACION DEL TABLERO
     celula** tablero = crearTablero(TAM_TABLERO_H, TAM_TABLERO_W);
@@ -45,7 +60,7 @@ int main(int argc, char *argv[])
     }
 
     ///CARGA DE UN TABLERO DESDE UN ARCHIVO
-    if (!cargaTablero(tablero, argv[1], CENTER_H, CENTER_W,TAM_TABLERO_H,TAM_TABLERO_W))
+    if (!cargaTablero(tablero, tableroNombre, CENTER_H, CENTER_W,TAM_TABLERO_H,TAM_TABLERO_W))
     {
         printf("Error al cargar el tablero desde el archivo.\n");
         destruirTablero(tablero, TAM_TABLERO_H);
