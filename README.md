@@ -50,8 +50,8 @@ El nombre del archivo debe ser enviado al programa mediante linea de comandos y 
 
 ## Preview
 
-![canon](https://i.postimg.cc/7L6tBTns/ezgif-1-230a36c304.gif)
+![canon](https://github.com/TomasCornara/Juego-de-La-Vida-Conway/blob/main/maps/canon.gif)
 
-![puffer](https://i.postimg.cc/PfYzLqXR/puffer.gif)
+![puffer](https://github.com/TomasCornara/Juego-de-La-Vida-Conway/blob/main/maps/puffer.gif)
 
-![filler](https://i.postimg.cc/V6jgcs5p/filler.gif)
+![filler](https://github.com/TomasCornara/Juego-de-La-Vida-Conway/blob/main/maps/filler.gif)
