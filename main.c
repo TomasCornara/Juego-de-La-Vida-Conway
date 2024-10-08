@@ -16,8 +16,14 @@
 
 int main(int argc, char *argv[])
 {
+    //Verifico que se haya ingresado algun tablero por parametros
+    if (argc < 2) {
+        printf("Error. No se ingresó un tablero.\n");
+        return -1;
+    }
+
     ///BLOQUE PARAMETROS PARA SDL
-    int delay               = 100;
+    int delay               = 50;
     SDL_Window* window      = NULL;
     SDL_Renderer* renderer  = NULL;
     SDL_Event e;
@@ -39,7 +45,7 @@ int main(int argc, char *argv[])
     }
 
     ///CARGA DE UN TABLERO DESDE UN ARCHIVO
-    if (!cargaTablero(tablero, "puffer.txt", CENTER_H, CENTER_W,TAM_TABLERO_H,TAM_TABLERO_W))
+    if (!cargaTablero(tablero, argv[1], CENTER_H, CENTER_W,TAM_TABLERO_H,TAM_TABLERO_W))
     {
         printf("Error al cargar el tablero desde el archivo.\n");
         destruirTablero(tablero, TAM_TABLERO_H);
@@ -132,19 +138,6 @@ int main(int argc, char *argv[])
             }
         }
 
-        /*for(int x = 0 + CENTER_H - 2; x < CENTER_H + 15; x++)
-        {
-            for(int i = 0 + CENTER_W - 2; i < CENTER_W + 40; i++)
-            {
-                if(tablero[x][i].estadoActual == true){
-                    printf("# ");
-                } else {
-                    printf("%d ",tablero[x][i].cantVecinosVivos);
-                }
-            }
-            printf("\n");
-        }*/
-
         // Actualizar el lienzo
         SDL_RenderPresent(renderer);
 
@@ -161,7 +154,7 @@ int main(int argc, char *argv[])
         // Si ya se alcanzó el número de generaciones, preguntar cuántas más generar
         if (cantGen == k)
         {
-            //system("cls");
+            system("cls");
             do
             {
                 printf("Cuantas generaciones quiere generar? ");

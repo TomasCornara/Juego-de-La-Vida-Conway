@@ -1,14 +1,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "juego.h"
-
+#include <string.h>
 //Leer tablero
-bool cargaTablero(celula** tablero, char* archivoName, int centroX, int centroY, unsigned int fil, unsigned int col)
+bool cargaTablero(celula** tablero, const char* nombreDelArchivo, int centroX, int centroY, unsigned int fil, unsigned int col)
 {
-    int coordenadaX, coordenadaY;
 
+    char* archivoName = (char*)malloc(strlen(nombreDelArchivo) + 8); // "./maps/" + nombreDelArchivo + '\0'
+    int coordenadaX, coordenadaY;
+    //Armo la dir del archivo
+    sprintf(archivoName,"%s%s","./maps/",nombreDelArchivo);
     // Abro el archivo
     FILE* archivo = fopen(archivoName, "rt");
+    free(archivoName); //No necesito mas esto
     if (!archivo)  // Chequeo si se pudo abrir el archivo
     {
         return false; //Devuelvo false porque hubo un error

@@ -28,7 +28,7 @@ celula** crearTablero(unsigned int fil, unsigned int col);
 void destruirTablero(celula** tablero, unsigned int fil);
 
 //Lee desde un archivo un tablero
-bool cargaTablero(celula** tablero, char* archivoName, int centroX, int centroY, unsigned int fil, unsigned int col);
+bool cargaTablero(celula** tablero, const char* nombreDelArchivo, int centroX, int centroY, unsigned int fil, unsigned int col);
 
 #endif // JUEGO_H_INCLUDED
 
