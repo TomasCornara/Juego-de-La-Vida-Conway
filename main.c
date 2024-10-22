@@ -193,7 +193,6 @@ int main(int argc, char *argv[])
 
     ///Liberaciones de SDL
     //destruyo todos los elementos creados
-    //Observar ni mas ni menos que destructores, en la asignatura no inventamos nada!
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();

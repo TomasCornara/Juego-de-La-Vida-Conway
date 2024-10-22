@@ -38,7 +38,6 @@
 			<Add option="-lmingw32" />
 			<Add option="-lSDL2main" />
 			<Add option="-lSDL2" />
-			<Add option="-LC:\Users\Tomas\Desktop\juegoDeLaVida\juegoDeLaVida\juegoDeLaVida\SDL2\lib" />
 			<Add directory="SDL2/lib" />
 		</Linker>
 		<Unit filename=".gitattributes" />
