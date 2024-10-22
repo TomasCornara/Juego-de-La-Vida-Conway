@@ -55,11 +55,14 @@ El archivo de texto del mapa inicial debe estar en una sub carpeta llamada "maps
 
 
 ### Utilizar
-Debe navegar a la carpeta donde se encuentre el punto el ejecutable, abrir una consola de comandos y ejecutar el programa enviando el nombre del estado inicial como argumento. 
+- Para usar el programa, debe navegar a la carpeta donde se encuentre el punto el ejecutable, abrir una consola de comandos y ejecutar el programa enviando el nombre del estado inicial como argumento. 
 Ejemplo:
 ```
 juegoDeLaVida.exe filler.txt
 ```
+
+- Ingrese la cantidad de generaciones que desea ver.
+- Use la tecla ESC para terminar la ejecución del programa.
 
 ## Preview
 
