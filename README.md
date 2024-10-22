@@ -8,7 +8,7 @@ El **Juego de la Vida de Conway** es una simulación que se lleva a cabo en una 
 2. Una célula viva con dos o tres vecinos vivos sobrevive.
 3. Una célula viva con más de tres vecinos vivos muere (sobrepoblación).
 4. Una célula muerta con exactamente tres vecinos vivos revive (reproducción).
-5. 
+
 ## Tabla de Contenidos
 
 - [Descripción del Proyecto](#descripción-del-proyecto)
