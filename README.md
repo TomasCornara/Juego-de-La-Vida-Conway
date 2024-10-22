@@ -1,6 +1,6 @@
 # El Juego de la Vida - TP UNLaM Topicos de Programacion.
 
-Este repositorio es una implementacion en C del **Juego de la Vida** creado por el matematico britanico **John Horton Conway** en 1970.
+Este repositorio es una implementacion en C y usando la libreria SDL2 del **Juego de la Vida** creado por el matematico britanico **John Horton Conway** en 1970.
 
 El **Juego de la Vida de Conway** es una simulación que se lleva a cabo en una cuadrícula de celdas que pueden estar en dos estados: vivas o muertas. La evolución de las células está determinada por las siguientes reglas:
 
@@ -19,22 +19,31 @@ El **Juego de la Vida de Conway** es una simulación que se lleva a cabo en una 
 
 ## Descripción del Proyecto
 
-Este proyecto esta escrito en C y utiliza un vector bidimensional de estructuras 'Celula', donde cada una almacena su estado actual, estado futuro y el número de vecinos vivos. El programa carga un tablero de juego inicial desde un archivo de texto y calcula uno nuevo recorriendo la matriz e intercambiando el estado actual por el futuro. A partir de este nuevo tablero, calcula los vecinos y actualiza los estados futuros.
-La parte visual se muestra mediante SDL2.
+Este proyecto esta escrito en C y utiliza un vector bidimensional de estructuras 'Celula', donde cada una almacena su estado actual, estado futuro y el número de vecinos vivos. El programa carga un tablero de juego inicial desde un archivo de texto y calcula sus nuevos estados recorriendo la matriz e intercambiando el estado actual por el futuro.
+
+Incluye 3 mapas de estados iniciales
+
+- [canon.txt](#canon)
+- [puffer.txt](#puffer)
+- [filler.txt](#filler)
 
 
 
 ## Instrucciones de Uso
 
+### Compilacion
 Para compilar y ejecutar el proyecto:
 
 1. Clonar este repositorio.
-2. Cargar una matriz de estado inicial
-3. Compilar usando GCC
+2. Compilar usando GCC
 
 ```
-gcc -o main.c
+gcc -o main.exe main.c -lmingw32 -lSDL2main -lSDL2 -I./SDL2/include -L./SDL2/lib
 ```
+3. Asegurese de copiar SDL2.dll de ./SDL2/bin a la carpeta donde esta el .exe resultante
+4. Asegurese de tener en la misma carpeta del .exe una sub carpeta llamada maps y coloque ahi el mapa que quiere cargar
+
+### Archivos de estados iniciales
 El archivo de texto del mapa inicial debe estar en una sub carpeta llamada "maps" que se encuentre en el mismo directorio que el .exe y debe estar formateado de la siguiente forma:
 
 | Fila,Columna |
@@ -44,14 +53,22 @@ El archivo de texto del mapa inicial debe estar en una sub carpeta llamada "maps
 |X2,Yb|
 |Xn,Yn'|
 
-El nombre del archivo debe ser enviado al programa mediante linea de comandos y debe incluir el formato. Por ejemeplo: "canon.txt"
 
-
+### Utilizar
+Debe navegar a la carpeta donde se encuentre el punto el ejecutable, abrir una consola de comandos y ejecutar el programa enviando el nombre del estado inicial como argumento. 
+Ejemplo:
+```
+juegoDeLaVida.exe filler.txt
+```
 
 ## Preview
 
-![canon](https://github.com/TomasCornara/Juego-de-La-Vida-Conway/blob/main/maps/canon.gif)
 
-![puffer](https://github.com/TomasCornara/Juego-de-La-Vida-Conway/blob/main/maps/puffer.gif)
+### Canon
+![canon](https://github.com/TomasCornara/Juego-de-La-Vida-Conway/blob/main/maps/canon.gif "canon.txt")
 
-![filler](https://github.com/TomasCornara/Juego-de-La-Vida-Conway/blob/main/maps/filler.gif)
+### Puffer
+![puffer](https://github.com/TomasCornara/Juego-de-La-Vida-Conway/blob/main/maps/puffer.gif "puffer.txt")
+
+### Filler
+![filler](https://github.com/TomasCornara/Juego-de-La-Vida-Conway/blob/main/maps/filler.gif "filler.txt")
