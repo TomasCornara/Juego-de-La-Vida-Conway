@@ -12,7 +12,7 @@ bool cargaTablero(celula** tablero, const char* nombreDelArchivo, int centroX, i
     sprintf(archivoName,"%s%s","./maps/",nombreDelArchivo);
     // Abro el archivo
     FILE* archivo = fopen(archivoName, "rt");
-    free(archivoName); //No necesito mas esto
+    free(archivoName); //No necesito mas el nombre del archivo
     if (!archivo)  // Chequeo si se pudo abrir el archivo
     {
         return false; //Devuelvo false porque hubo un error
@@ -38,11 +38,11 @@ bool cargaTablero(celula** tablero, const char* nombreDelArchivo, int centroX, i
         }
     }
 
-    return true;  // Salió true porque salio todo bien
+    return true;  // Salio true porque salio todo bien
 }
 
 
-// Crear tablero con memoria dinámica usando calloc
+// Crear tablero con memoria dinamica usando calloc
 celula** crearTablero(unsigned int fil, unsigned int col)
 {
     // Reserva para las filas (punteros a cada fila) usando calloc
@@ -106,7 +106,7 @@ void actualizarTablero(celula** matriz, unsigned int fil, unsigned int col)
         }
     }
 
-    //Actualiza la cantidad de vecinos vivos para cada célula y luego su estado futuro
+    //Actualiza la cantidad de vecinos vivos para cada celula y luego su estado futuro
     for (unsigned int x = 0; x < fil; x++)
     {
         for (unsigned int y = 0; y < col; y++)
@@ -117,7 +117,7 @@ void actualizarTablero(celula** matriz, unsigned int fil, unsigned int col)
     }
 }
 
-// Calcula cuál va a ser el estado futuro de una célula
+// Calcula cual va a ser el estado futuro de una celula
 bool calEstadoFuturo(celula** matriz, unsigned int x, unsigned int y)
 {
     if (matriz[x][y].estadoActual == true)
@@ -130,12 +130,12 @@ bool calEstadoFuturo(celula** matriz, unsigned int x, unsigned int y)
     }
 }
 
-// Calcula la cantidad de vecinos vivos de una célula
+// Calcula la cantidad de vecinos vivos de una celula
 unsigned char calCantVecinos(celula** matriz, unsigned int fil, unsigned int col, unsigned int posX, unsigned int posY)
 {
     unsigned char cantVecinos = 0;
 
-    // Definir los límites de la submatriz
+    // Definir los limites de la submatriz
     unsigned int limiteLateralIzq = (posY > 0) ? posY - 1 : 0;
     unsigned int limiteSuperior = (posX > 0) ? posX - 1 : 0;
     unsigned int limiteLateralDer = (posY < (col - 1)) ? posY + 1 : col - 1;
@@ -146,10 +146,10 @@ unsigned char calCantVecinos(celula** matriz, unsigned int fil, unsigned int col
     {
         for (unsigned int y = limiteLateralIzq; y <= limiteLateralDer; y++)
         {
-            // No contar la posición central
+            // No contar la posicion central
             if (!(x == posX && y == posY))
             {
-                // Sumar el estado actual (1 si está viva, 0 si no)
+                // Sumar el estado actual (1 si esta viva, 0 si no)
                 cantVecinos += matriz[x][y].estadoActual;
             }
         }

@@ -134,21 +134,21 @@ int main(int argc, char *argv[])
         {
             for (int j = 0; j < TAM_TABLERO_W; ++j)
             {
-                // Ajustar la posición del rectángulo
+                // Ajustar la posicion del rectangulo
                 fillRect.x = j * CELL_WIDTH;
                 fillRect.y = i * CELL_HEIGHT;
 
-                // Elegir el color según el estado de la célula
-                if (tablero[i][j].estadoActual == true)
+                // Elegir el color segun el estado de la celula
+                if (tablero[i][j].estadoActual)
                 {
-                    SDL_SetRenderDrawColor(renderer, 0xB3, 0xB3, 0xB3, 0xB3); // Gris para célula viva
+                    SDL_SetRenderDrawColor(renderer, 0xB3, 0xB3, 0xB3, 0xB3); // Gris para celula viva
                 }
                 else
                 {
-                    SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF); // Negro para célula muerta
+                    SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF); // Negro para celula muerta
                 }
 
-                // Dibujar la célula
+                // Dibujar la celula
                 SDL_RenderFillRect(renderer, &fillRect);
             }
         }
@@ -162,11 +162,11 @@ int main(int argc, char *argv[])
         // Retraso para controlar la velocidad de actualización
         SDL_Delay(delay);
 
-        // Actualizar título de la ventana
+        // Actualizar titulo de la ventana
         snprintf(titulo, sizeof(titulo), "Juego De La Vida. Generacion: %d", k);
         SDL_SetWindowTitle(window, titulo);
 
-        // Si ya se alcanzó el número de generaciones, preguntar cuántas más generar
+        // Si ya se alcanzo el numero de generaciones, preguntar cuántas más generar
         if (cantGen == k)
         {
             system("cls");

@@ -5,7 +5,7 @@
 
 typedef struct {
     bool estadoActual;
-    unsigned char estadoFuturo;
+    bool estadoFuturo;
     unsigned char cantVecinosVivos;
 } celula;
 
