@@ -4,7 +4,7 @@
 #include <unistd.h>
 #ifdef __MINGW32__
 #endif
-#include <SDL.h>
+#include <SDL2/SDL.h>
 #include "juego.h"
 #define CELL_HEIGHT 3
 #define CELL_WIDTH 3
@@ -23,6 +23,7 @@ int main(int argc, char *argv[])
     SDL_Renderer* renderer  = NULL;
     SDL_Event e;
     SDL_Rect fillRect;
+    SDL_Surface *icon;
 
     ///BLOQUE DECLARACION
     unsigned char done = 0;
@@ -34,7 +35,7 @@ int main(int argc, char *argv[])
 
     ///Verifico que se haya ingresado algun tablero por parametros
     if (argc < 2) {
-        printf("Error. No se ingresó un tablero.\n");
+        printf("Error. No se ingreso un tablero.\n");
         return -1;
     }
 
@@ -81,12 +82,21 @@ int main(int argc, char *argv[])
                               SDL_WINDOWPOS_UNDEFINED,
                               RES_W,
                               RES_H,
-                              SDL_WINDOW_SHOWN);
+                              SDL_WINDOW_SHOWN); //SDL_WINDOW_BORDERLESS
     if (!window)
     {
         SDL_Log("Error en la creacion de la ventana: %s\n", SDL_GetError());
         SDL_Quit();
         return -1;
+    }
+
+    //Establece icono
+    icon = SDL_LoadBMP("icon.bmp");
+    if (!icon) {
+        printf("Error cargando icono: %s\n", SDL_GetError());
+    } else {
+        SDL_SetWindowIcon(window, icon);  // Establece el icono en la ventana
+        SDL_FreeSurface(icon); // Liberar el recurso una vez asignado
     }
 
     // Creamos el lienzo

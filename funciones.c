@@ -5,18 +5,38 @@
 //Leer tablero
 bool cargaTablero(celula** tablero, const char* nombreDelArchivo, int centroX, int centroY, unsigned int fil, unsigned int col)
 {
+    int coordenadaX;
+    int coordenadaY;
+    char caracter;
+    char* archivoName;
+    unsigned int x = 0;
+    unsigned int y = 0;
+    FILE* archivo;
 
-    char* archivoName = (char*)malloc(strlen(nombreDelArchivo) + 8); // "./maps/" + nombreDelArchivo + '\0'
-    int coordenadaX, coordenadaY;
+    archivoName = (char*)malloc(strlen(nombreDelArchivo) + 8); // "./maps/" + nombreDelArchivo + '\0'
+
     //Armo la dir del archivo
     sprintf(archivoName,"%s%s","./maps/",nombreDelArchivo);
+
     // Abro el archivo
-    FILE* archivo = fopen(archivoName, "rt");
+    archivo = fopen(archivoName, "rt");
     free(archivoName); //No necesito mas el nombre del archivo
     if (!archivo)  // Chequeo si se pudo abrir el archivo
     {
         return false; //Devuelvo false porque hubo un error
     }
+
+    //Si lo que encuentro es un #, tengo que buscar donde termina el comentario
+    while((caracter = fgetc(archivo)) == '#'){
+        //avanzo hasta la siguiente linea
+        while((caracter = fgetc(archivo)) != '\n' && caracter != EOF);
+    }
+
+    //En la variable "caracter" queda lo que hay despues del \n del ultimo comment
+    //Si no es EOF, tengo que devolverlo porque es parte de una coordenada
+    if(caracter != EOF) fseek(archivo,-1,SEEK_CUR);
+
+
 
     // Si se encuentra el archivo, leo las coordenadas y actualizo el tablero
     while (fscanf(archivo, "%d,%d", &coordenadaX, &coordenadaY) != EOF)
@@ -29,9 +49,9 @@ bool cargaTablero(celula** tablero, const char* nombreDelArchivo, int centroX, i
     fclose(archivo);
 
     // Les calculo sus vecinos
-    for (unsigned int x = 0; x < fil; x++)
+    for (x = 0; x < fil; x++)
     {
-        for (unsigned int y = 0; y < col; y++)
+        for (y = 0; y < col; y++)
         {
             tablero[x][y].cantVecinosVivos = calCantVecinos(tablero, fil, col, x, y);
             tablero[x][y].estadoFuturo = calEstadoFuturo(tablero, x, y);
@@ -45,17 +65,22 @@ bool cargaTablero(celula** tablero, const char* nombreDelArchivo, int centroX, i
 // Crear tablero con memoria dinamica usando calloc
 celula** crearTablero(unsigned int fil, unsigned int col)
 {
+    celula** vectorFilas;
+    celula** punteroFila;
+    unsigned int x;
+
+
     // Reserva para las filas (punteros a cada fila) usando calloc
-    celula** vectorFilas = calloc(fil, sizeof(celula*));
+    vectorFilas = calloc(fil, sizeof(celula*));
     if (!vectorFilas)
     {
         return NULL;
     }
 
-    celula** punteroFila = vectorFilas;  // Puntero auxiliar para recorrer las filas
+    punteroFila = vectorFilas;  // Puntero auxiliar para recorrer las filas
 
     // Reserva memoria para cada fila
-    for (unsigned int x = 0; x < fil; x++, punteroFila++)
+    for (x = 0; x < fil; x++, punteroFila++)
     {
         *punteroFila = calloc(col, sizeof(celula));
 
@@ -76,40 +101,41 @@ celula** crearTablero(unsigned int fil, unsigned int col)
 }
 
 
-//Destruye un tablero dinamico
+// Destruye un tablero dinamico
 void destruirTablero(celula** tablero, unsigned int fil)
 {
-    if (tablero == NULL)
-    {
-        return;
-    }
+    celula** fin;
 
-    // Liberar cada fila
-    for (unsigned int i = 0; i < fil; i++)
+    // Liberar cada fila usando aritmética de punteros
+    for (fin = tablero + fil; tablero < fin; tablero++)
     {
-        free(tablero[i]);  // Liberar la fila actual
+        free(*tablero);  // Liberar la fila actual
     }
 
     // Liberar el array de punteros a filas
-    free(tablero);
+    free(tablero - fil);
 }
+
 
 // Actualiza los estados de las células
 void actualizarTablero(celula** matriz, unsigned int fil, unsigned int col)
 {
+    unsigned int x;
+    unsigned int y;
+
     // Actualiza el estado actual basado en el futuro
-    for (unsigned int x = 0; x < fil; x++)
+    for (x = 0; x < fil; x++)
     {
-        for (unsigned int y = 0; y < col; y++)
+        for (y = 0; y < col; y++)
         {
             matriz[x][y].estadoActual = matriz[x][y].estadoFuturo;
         }
     }
 
     //Actualiza la cantidad de vecinos vivos para cada celula y luego su estado futuro
-    for (unsigned int x = 0; x < fil; x++)
+    for (x = 0; x < fil; x++)
     {
-        for (unsigned int y = 0; y < col; y++)
+        for (y = 0; y < col; y++)
         {
             matriz[x][y].cantVecinosVivos = calCantVecinos(matriz, fil, col, x, y);
             matriz[x][y].estadoFuturo = calEstadoFuturo(matriz, x, y);
@@ -133,18 +159,26 @@ bool calEstadoFuturo(celula** matriz, unsigned int x, unsigned int y)
 // Calcula la cantidad de vecinos vivos de una celula
 unsigned char calCantVecinos(celula** matriz, unsigned int fil, unsigned int col, unsigned int posX, unsigned int posY)
 {
-    unsigned char cantVecinos = 0;
+    unsigned int limiteLateralIzq;
+    unsigned int limiteSuperior;
+    unsigned int limiteLateralDer;
+    unsigned int limiteInferior;
+    unsigned char cantVecinos;
+    unsigned int x;
+    unsigned int y;
+
+    cantVecinos = 0;
 
     // Definir los limites de la submatriz
-    unsigned int limiteLateralIzq = (posY > 0) ? posY - 1 : 0;
-    unsigned int limiteSuperior = (posX > 0) ? posX - 1 : 0;
-    unsigned int limiteLateralDer = (posY < (col - 1)) ? posY + 1 : col - 1;
-    unsigned int limiteInferior = (posX < (fil - 1)) ? posX + 1 : fil - 1;
+    limiteLateralIzq = (posY > 0) ? posY - 1 : 0;
+    limiteSuperior = (posX > 0) ? posX - 1 : 0;
+    limiteLateralDer = (posY < (col - 1)) ? posY + 1 : col - 1;
+    limiteInferior = (posX < (fil - 1)) ? posX + 1 : fil - 1;
 
     // Recorrer la submatriz
-    for (unsigned int x = limiteSuperior; x <= limiteInferior; x++)
+    for (x = limiteSuperior; x <= limiteInferior; x++)
     {
-        for (unsigned int y = limiteLateralIzq; y <= limiteLateralDer; y++)
+        for (y = limiteLateralIzq; y <= limiteLateralDer; y++)
         {
             // No contar la posicion central
             if (!(x == posX && y == posY))

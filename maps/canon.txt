@@ -1,3 +1,5 @@
+# Gosper glider gun por Bill Gosper
+# conwaylife.com/wiki/Gosper_glider_gun
 -10,4
 -9,2
 -9,4
