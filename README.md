@@ -49,8 +49,8 @@ El archivo de texto del mapa inicial debe estar en una sub carpeta llamada "maps
 | Fila,Columna |
 | -------------|
 |X,Y|
-|X1,Ya|
-|X2,Yb|
+|X1,Y1|
+|X2,Y2|
 |Xn,Yn'|
 
 
