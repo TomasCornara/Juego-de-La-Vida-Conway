@@ -26,8 +26,8 @@ Incluye 5 archivos de estados iniciales
 - [canon.txt](#canon)
 - [puffer.txt](#puffer)
 - [filler.txt](#filler)
-- [unlam.txt](#unlam)
-- [diit.txt](#diit)
+- unlam.txt
+- diit.txt
 
 
 
