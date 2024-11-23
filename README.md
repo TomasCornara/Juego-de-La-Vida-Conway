@@ -21,11 +21,13 @@ El **Juego de la Vida de Conway** es una simulación que se lleva a cabo en una 
 
 Este proyecto esta escrito en C y utiliza un vector bidimensional de estructuras 'Celula', donde cada una almacena su estado actual, estado futuro y el número de vecinos vivos. El programa carga un tablero de juego inicial desde un archivo de texto y calcula sus nuevos estados recorriendo la matriz e intercambiando el estado actual por el futuro.
 
-Incluye 3 mapas de estados iniciales
+Incluye 5 archivos de estados iniciales
 
 - [canon.txt](#canon)
 - [puffer.txt](#puffer)
 - [filler.txt](#filler)
+- [unlam.txt](#unlam)
+- [diit.txt](#diit)
 
 
 
